@@ -1,0 +1,21 @@
+{
+  "name": "Tabaco City Library and Information Center",
+  "short_name": "TCLIC",
+  "description": "Government Services Made Easy at Your Library! Access library resources and digital services.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0038A8",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
