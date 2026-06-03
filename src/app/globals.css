@@ -11,6 +11,7 @@
   --accent: #FCD116;
 
   --bg: #F8FAFC;
+  --bg-alt: #EFF6FF;
   --text: #0F172A;
 
   --muted: #475569;
@@ -96,6 +97,16 @@ img { max-width: 100%; }
   border-radius: 12px;
   padding: 1.5rem;
   margin-top: 2rem;
+}
+
+/* Content section offset for fixed nav */
+.content-section {
+  padding-top: 108px;
+}
+
+/* Typography */
+h1, h2, h3 {
+  font-family: var(--font-heading), Georgia, serif;
 }
 
 /* Section header */
@@ -438,6 +449,46 @@ img { max-width: 100%; }
 .animate-delay-400 { animation-delay: 0.4s; }
 .animate-delay-500 { animation-delay: 0.5s; }
 
+/* Hover effect variants */
+.hover-lift {
+  transition: all 0.3s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+}
+
+.hover-glow {
+  transition: all 0.3s ease;
+}
+.hover-glow:hover {
+  box-shadow: 0 0 24px rgba(0,56,168,0.25), 0 8px 30px rgba(0,56,168,0.1);
+  border-color: var(--primary);
+}
+
+.hover-border-reveal {
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+.hover-border-reveal:hover {
+  border-color: var(--primary);
+  background: rgba(0,56,168,0.04);
+}
+
+.hover-bg-shift {
+  transition: all 0.3s ease;
+}
+.hover-bg-shift:hover {
+  background: rgba(0,56,168,0.06);
+}
+
+.hover-scale-subtle {
+  transition: all 0.4s ease;
+}
+.hover-scale-subtle:hover {
+  transform: scale(1.02);
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .section-title {
@@ -451,4 +502,14 @@ img { max-width: 100%; }
   .hero-buttons {
     flex-direction: column;
   }
+}
+
+/* Marquee scrolling animation */
+.marquee-track {
+  animation: marquee-scroll 20s linear infinite;
+}
+
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }

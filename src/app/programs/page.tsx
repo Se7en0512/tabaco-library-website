@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import SectionHeader from '@/components/SectionHeader';
 import Card from '@/components/Card';
 import {
@@ -7,6 +8,11 @@ import {
   Users,
   Info
 } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: 'Programs & Events | Tabaco City Library and Information Center',
+  description: 'Join community programs at Tabaco City Library — story time, digital literacy workshops, tutorial sessions, and more.',
+};
 
 export default function Programs() {
   const programs = [
@@ -39,7 +45,7 @@ export default function Programs() {
 
   return (
     <div className="min-h-screen">
-      <section className="content-section py-20 px-6" style={{ paddingTop: '108px' }}>
+      <section className="content-section py-20 px-6">
         <SectionHeader
           tag={<><span className="text-2xl">📅</span> Programs & Events</>}
           title="Learn, Connect, Participate"
@@ -54,7 +60,7 @@ export default function Programs() {
                   icon={program.icon}
                   title={program.title}
                   description={program.description}
-                  className="h-full"
+                  className="h-full hover-glow glass p-6 rounded-xl shadow-[var(--shadow)] border border-[var(--border)]"
                 />
               </li>
             ))}

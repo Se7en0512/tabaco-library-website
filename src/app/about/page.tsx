@@ -1,5 +1,11 @@
+import type { Metadata } from 'next';
 import SectionHeader from '@/components/SectionHeader';
 import { Target, Eye } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: 'About Us | Tabaco City Library and Information Center',
+  description: 'Learn about the vision, mission, and values of Tabaco City Library and Information Center — empowering the community through knowledge and service.',
+};
 
 export default function About() {
   return (

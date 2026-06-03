@@ -2,19 +2,14 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { BookOpen, Menu, X, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
+import { useTranslations } from '@/i18n/useTranslations';
 
 export default function Navigation() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
-
-  const scrollToSection = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-    setServicesOpen(false);
-    setAboutOpen(false);
-    setMobileOpen(false);
-  };
+  const t = useTranslations();
 
   const scrollToTop = () => {
     document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
@@ -29,7 +24,7 @@ export default function Navigation() {
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-white px-4 py-2 rounded-lg border shadow-lg z-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
       >
-        Skip to main content
+        {t.nav.skipLink}
       </a>
 
       {/* Navigation */}
@@ -59,7 +54,7 @@ export default function Navigation() {
                 href="/"
                 className="text-gray-700 hover:text-blue-600 font-medium transition-colors py-2"
               >
-                Home
+                {t.nav.home}
               </Link>
 
               <div className="relative">
@@ -69,7 +64,7 @@ export default function Navigation() {
                   aria-expanded={servicesOpen}
                   aria-controls="services-menu"
                 >
-                  Services
+                  {t.nav.services}
                   <ChevronDown className={`w-4 h-4 transition-transform ${servicesOpen ? 'rotate-180' : ''}`} />
                 </button>
 
@@ -84,14 +79,14 @@ export default function Navigation() {
                       className="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors rounded-lg mx-2"
                       role="menuitem"
                     >
-                      E-Gov Services
+                      {t.nav.eGovServices}
                     </a>
                     <a
                       href="/library-services"
                       className="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors rounded-lg mx-2"
                       role="menuitem"
                     >
-                      Library Services
+                      {t.nav.libraryServices}
                     </a>
                   </div>
                 )}
@@ -101,7 +96,7 @@ export default function Navigation() {
                 href="/programs"
                 className="text-gray-700 hover:text-blue-600 font-medium transition-colors py-2"
               >
-                Programs
+                {t.nav.programs}
               </a>
 
               <div className="relative">
@@ -111,7 +106,7 @@ export default function Navigation() {
                   aria-expanded={aboutOpen}
                   aria-controls="about-menu"
                 >
-                  About
+                  {t.nav.about}
                   <ChevronDown className={`w-4 h-4 transition-transform ${aboutOpen ? 'rotate-180' : ''}`} />
                 </button>
 
@@ -126,14 +121,14 @@ export default function Navigation() {
                       className="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors rounded-lg mx-2"
                       role="menuitem"
                     >
-                      About Us
+                      {t.nav.aboutUs}
                     </a>
                     <a
                       href="/staff"
                       className="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors rounded-lg mx-2"
                       role="menuitem"
                     >
-                      Our Staff
+                      {t.nav.ourStaff}
                     </a>
                   </div>
                 )}
@@ -143,7 +138,7 @@ export default function Navigation() {
                 href="/contact"
                 className="text-gray-700 hover:text-blue-600 font-medium transition-colors py-2"
               >
-                Contact
+                {t.nav.contact}
               </a>
             </div>
 
@@ -153,7 +148,7 @@ export default function Navigation() {
                 href="/membership"
                 className="hidden md:inline-flex bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold px-6 py-2.5 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
               >
-                Join Now
+                {t.nav.joinNow}
               </a>
 
               {/* Mobile Menu Button */}
@@ -182,7 +177,7 @@ export default function Navigation() {
                 className="block w-full text-left text-gray-700 hover:text-blue-600 font-medium py-2"
                 onClick={() => setMobileOpen(false)}
               >
-                Home
+                {t.nav.home}
               </Link>
 
               <div>
@@ -191,7 +186,7 @@ export default function Navigation() {
                   className="flex items-center gap-1 w-full text-left text-gray-700 hover:text-blue-600 font-medium py-2"
                   aria-expanded={servicesOpen}
                 >
-                  Services
+                  {t.nav.services}
                   <ChevronDown className={`w-4 h-4 transition-transform ${servicesOpen ? 'rotate-180' : ''}`} />
                 </button>
 
@@ -202,14 +197,14 @@ export default function Navigation() {
                       className="block text-gray-600 hover:text-blue-700 py-1"
                       onClick={() => setMobileOpen(false)}
                     >
-                      E-Gov Services
+                      {t.nav.eGovServices}
                     </a>
                     <a
                       href="/library-services"
                       className="block text-gray-600 hover:text-blue-700 py-1"
                       onClick={() => setMobileOpen(false)}
                     >
-                      Library Services
+                      {t.nav.libraryServices}
                     </a>
                   </div>
                 )}
@@ -220,7 +215,7 @@ export default function Navigation() {
                 className="block text-gray-700 hover:text-blue-600 font-medium py-2"
                 onClick={() => setMobileOpen(false)}
               >
-                Programs
+                {t.nav.programs}
               </a>
 
               <div>
@@ -229,7 +224,7 @@ export default function Navigation() {
                   className="flex items-center gap-1 w-full text-left text-gray-700 hover:text-blue-600 font-medium py-2"
                   aria-expanded={aboutOpen}
                 >
-                  About
+                  {t.nav.about}
                   <ChevronDown className={`w-4 h-4 transition-transform ${aboutOpen ? 'rotate-180' : ''}`} />
                 </button>
 
@@ -240,14 +235,14 @@ export default function Navigation() {
                       className="block text-gray-600 hover:text-blue-700 py-1"
                       onClick={() => setMobileOpen(false)}
                     >
-                      About Us
+                      {t.nav.aboutUs}
                     </a>
                     <a
                       href="/staff"
                       className="block text-gray-600 hover:text-blue-700 py-1"
                       onClick={() => setMobileOpen(false)}
                     >
-                      Our Staff
+                      {t.nav.ourStaff}
                     </a>
                   </div>
                 )}
@@ -258,15 +253,7 @@ export default function Navigation() {
                 className="block text-gray-700 hover:text-blue-600 font-medium py-2"
                 onClick={() => setMobileOpen(false)}
               >
-                Contact
-              </a>
-
-              <a
-                href="/contact"
-                className="block text-gray-700 hover:text-blue-600 font-medium py-2"
-                onClick={() => setMobileOpen(false)}
-              >
-                Contact
+                {t.nav.contact}
               </a>
 
               <a
@@ -274,7 +261,7 @@ export default function Navigation() {
                 className="block bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold px-6 py-3 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 text-center mt-6"
                 onClick={() => setMobileOpen(false)}
               >
-                Join Now
+                {t.nav.joinNow}
               </a>
             </div>
           </div>

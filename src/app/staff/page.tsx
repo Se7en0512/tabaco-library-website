@@ -1,16 +1,16 @@
 'use client';
 
+import { useState, useMemo } from 'react';
 import SectionHeader from '@/components/SectionHeader';
-import { Users, UserCheck } from 'lucide-react';
+import { Users, UserCheck, Search } from 'lucide-react';
 
-export default function Staff() {
-  const administration = [
+const staffData = {
+  administration: [
     { name: 'Baby Glenda O. Bongao', role: 'City Vice-Mayor', avatar: 'https://ui-avatars.com/api/?name=Baby+Glenda+O.+Bongao&background=random&size=128' },
     { name: 'Katherine T. Bunao', role: 'City Librarian', avatar: 'https://ui-avatars.com/api/?name=Katherine+T.+Bunao&background=random&size=128' },
     { name: 'Marilyn M. Bendicio', role: 'Consultant Librarian', avatar: 'https://ui-avatars.com/api/?name=Marilyn+M.+Bendicio&background=random&size=128' },
-  ];
-
-  const circulation = [
+  ],
+  circulation: [
     { name: 'Glenda L. Hagosohos', role: 'Permanent Circulation', avatar: 'https://ui-avatars.com/api/?name=Glenda+L.+Hagosohos&background=random&size=128' },
     { name: 'Jecel B. Burce', role: 'Casual Librarian', avatar: 'https://ui-avatars.com/api/?name=Jecel+B.+Burce&background=random&size=128' },
     { name: 'Bonifacio B. Borlasa III', role: 'Casual Information', avatar: 'https://ui-avatars.com/api/?name=Bonifacio+B.+Borlasa+III&background=random&size=128' },
@@ -24,48 +24,56 @@ export default function Staff() {
     { name: 'Anna Rose D. Canon', role: 'Fiction', avatar: 'https://ui-avatars.com/api/?name=Anna+Rose+D.+Canon&background=random&size=128' },
     { name: 'Shyla P. Bonaobra', role: 'Law Corner', avatar: 'https://ui-avatars.com/api/?name=Shyla+P.+Bonaobra&background=random&size=128' },
     { name: 'Maria Loures Bongalon', role: 'Processor', avatar: 'https://ui-avatars.com/api/?name=Maria+Loures+Bongalon&background=random&size=128' },
-  ];
-
-  const electronic = [
+  ],
+  electronic: [
     { name: 'Reymund Broncate', role: 'Electronic Resources', avatar: 'https://ui-avatars.com/api/?name=Reymund+Broncate&background=random&size=128' },
     { name: 'Marivic C. Burce', role: 'Electronic Resources', avatar: 'https://ui-avatars.com/api/?name=Marivic+C.+Burce&background=random&size=128' },
     { name: 'Phillip Wendyll Belenzo', role: 'Electronic Resources', avatar: 'https://ui-avatars.com/api/?name=Phillip+Wendyll+Belenzo&background=random&size=128' },
-  ];
-
-  const support = [
-    { name: 'Erma B Cardiño', role: 'Maintenance Support Staff', avatar: 'https://ui-avatars.com/api/?name=Erma+B+Cardi%C3%B1o&background=random&size=128' },
+  ],
+  support: [
+    { name: 'Erma B Cardi\u00f1o', role: 'Maintenance Support Staff', avatar: 'https://ui-avatars.com/api/?name=Erma+B+Cardi%C3%B1o&background=random&size=128' },
     { name: 'Nestor Almonte', role: 'Utility', avatar: 'https://ui-avatars.com/api/?name=Nestor+Almonte&background=random&size=128' },
-  ];
+  ],
+};
 
-  const StaffSection = ({ title, staff }: { title: string; staff: typeof administration }) => (
-    <section className="mb-16" aria-labelledby={`section-${title.toLowerCase().replace(/\s+/g, '-')}`}>
-      <div className="section-header mb-8">
-        <h3 className="text-2xl md:text-3xl font-bold text-[var(--text)] text-center" id={`section-${title.toLowerCase().replace(/\s+/g, '-')}`}>
-          {title}
-        </h3>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {staff.map((person, index) => (
-          <div key={index} className="glass p-6 rounded-xl shadow-[var(--shadow)] hover:shadow-[var(--shadow-soft)] transition-all duration-300 flex items-center gap-4">
-            <img
-              src={person.avatar}
-              alt={person.name}
-              className="w-16 h-16 rounded-xl border-2 border-[var(--border)] flex-shrink-0"
-              loading="lazy"
-            />
-            <div>
-              <h4 className="font-semibold text-[var(--text)] text-lg leading-tight">{person.name}</h4>
-              <p className="text-sm text-[var(--muted)] font-medium">{person.role}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
+type StaffKey = keyof typeof staffData;
+
+const sectionLabels: Record<StaffKey, string> = {
+  administration: 'Administration',
+  circulation: 'Circulation & Services',
+  electronic: 'Electronic Resources',
+  support: 'Support',
+};
+
+export default function Staff() {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredSections = useMemo(() => {
+    if (!searchQuery.trim()) return staffData;
+
+    const q = searchQuery.toLowerCase();
+    const result: Partial<Record<StaffKey, typeof staffData.administration>> = {};
+
+    for (const [key, members] of Object.entries(staffData)) {
+      const filtered = members.filter(
+        (m) => m.name.toLowerCase().includes(q) || m.role.toLowerCase().includes(q)
+      );
+      if (filtered.length > 0) {
+        result[key as StaffKey] = filtered;
+      }
+    }
+
+    return result as typeof staffData;
+  }, [searchQuery]);
+
+  const totalVisible = useMemo(
+    () => Object.values(filteredSections).reduce((sum, arr) => sum + arr.length, 0),
+    [filteredSections]
   );
 
   return (
     <div className="min-h-screen">
-      <section className="content-section py-20 px-6" style={{ paddingTop: '108px' }}>
+      <section className="content-section py-20 px-6">
         <SectionHeader
           tag={<><Users className="w-6 h-6" /> Our Staff</>}
           title="People Who Make Service Possible"
@@ -73,10 +81,59 @@ export default function Staff() {
         />
 
         <div className="container mx-auto max-w-6xl">
-          <StaffSection title="Administration" staff={administration} />
-          <StaffSection title="Circulation & Services" staff={circulation} />
-          <StaffSection title="Electronic Resources" staff={electronic} />
-          <StaffSection title="Support" staff={support} />
+          {/* Search */}
+          <div className="max-w-md mx-auto mb-12">
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[var(--muted)]" />
+              <input
+                type="text"
+                placeholder="Search by name or position..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-12 pr-4 py-3 rounded-xl border border-[var(--border)] bg-white/80 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent transition-all text-[var(--text)]"
+              />
+            </div>
+            {searchQuery && (
+              <p className="text-sm text-[var(--muted)] text-center mt-3">
+                {totalVisible} staff member{totalVisible !== 1 ? 's' : ''} found
+              </p>
+            )}
+          </div>
+
+          {/* Staff Sections */}
+          {Object.entries(filteredSections).map(([key, staff]) => (
+            <section key={key} className="mb-16" aria-labelledby={`section-${key}`}>
+              <div className="section-header mb-8">
+                <h3 className="text-2xl md:text-3xl font-bold text-[var(--text)] text-center" id={`section-${key}`}>
+                  {sectionLabels[key as StaffKey]}
+                </h3>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {staff.map((person, index) => (
+                  <div key={index} className="glass p-6 rounded-xl shadow-[var(--shadow)] hover-lift flex items-center gap-4">
+                    <img
+                      src={person.avatar}
+                      alt={person.name}
+                      className="w-16 h-16 rounded-xl border-2 border-[var(--border)] flex-shrink-0"
+                      loading="lazy"
+                    />
+                    <div>
+                      <h4 className="font-semibold text-[var(--text)] text-lg leading-tight">{person.name}</h4>
+                      <p className="text-sm text-[var(--muted)] font-medium">{person.role}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          ))}
+
+          {totalVisible === 0 && (
+            <div className="text-center py-16">
+              <UserCheck className="w-16 h-16 text-[var(--muted)] mx-auto mb-4 opacity-40" />
+              <p className="text-xl font-semibold text-[var(--text)] mb-2">No staff found</p>
+              <p className="text-[var(--muted)]">Try a different search term.</p>
+            </div>
+          )}
         </div>
       </section>
     </div>

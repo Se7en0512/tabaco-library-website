@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import Link from 'next/link';
 
 interface CardProps {
   children?: ReactNode;
@@ -12,7 +13,7 @@ interface CardProps {
 
 export default function Card({ children, className = '', icon, title, description, href, onClick }: CardProps) {
   const cardContent = (
-    <div className={`card glass p-6 rounded-xl shadow-[var(--shadow)] hover:shadow-[var(--shadow-soft)] transition-all duration-300 hover:scale-105 border border-[var(--border)] ${className}`}>
+    <div className={`card p-6 rounded-xl border transition-all duration-300 ${className}`}>
       {(icon || title) && (
         <div className="flex items-center gap-4 mb-4">
           {icon && (
@@ -30,9 +31,9 @@ export default function Card({ children, className = '', icon, title, descriptio
 
   if (href) {
     return (
-      <a href={href} className="block">
+      <Link href={href} className="block">
         {cardContent}
-      </a>
+      </Link>
     );
   }
 

@@ -3,12 +3,15 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Route, MapPin } from 'lucide-react';
+import { useTranslations } from '@/i18n/useTranslations';
 
 export default function HeroSection() {
   const [isLoaded, setIsLoaded] = useState(false);
+  const t = useTranslations();
 
   useEffect(() => {
-    setIsLoaded(true);
+    const frame = requestAnimationFrame(() => setIsLoaded(true));
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   return (
@@ -55,27 +58,21 @@ export default function HeroSection() {
       {/* Hero Content */}
       <div className={`relative z-10 text-center max-w-6xl mx-auto px-6 transition-all duration-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
 
-        {/* Welcome Tag */}
-        <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-white px-6 py-3 rounded-full font-semibold text-sm mb-8 shadow-lg">
-          <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-          Your Gateway to Learning and Government Services
-        </div>
-
-        {/* Main Heading */}
+{/* Main Heading */}
         <h1
           id="hero-title"
           className="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-tight mb-6 drop-shadow-2xl"
         >
-          <span className="block">Beyond Boundaries</span>
+          <span className="block">{t.hero.welcome}</span>
           <span className="block bg-gradient-to-r from-cyan-300 via-blue-200 to-teal-200 bg-clip-text text-transparent">
-            Knowledge Without Limits
+            {t.hero.library}
           </span>
         </h1>
 
         {/* Subheading */}
         <p className="text-xl md:text-2xl text-blue-100 mb-12 max-w-3xl mx-auto leading-relaxed font-medium">
-          Empowering Tabaco City Through Information and Service.
-          <span className="block mt-2 text-lg text-blue-200">Government Made Simple, Knowledge Made Accessible.</span>
+          {t.hero.subtitle}
+          <span className="block mt-2 text-lg text-blue-200">{t.hero.subtitle2}</span>
         </p>
 
         {/* CTA Buttons */}
@@ -85,15 +82,15 @@ export default function HeroSection() {
             className="group bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-blue-900 font-bold px-8 py-4 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 inline-flex items-center gap-3 hover:scale-105 border border-white/20"
           >
             <Route className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-            Explore Services
+            {t.hero.exploreServices}
           </Link>
 
           <Link
             href="/contact"
-            className="group bg-white/10 backdrop-blur-md hover:bg-white/20 text-white font-bold px-8 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 inline-flex items-center gap-3 hover:scale-105 border border-white/30"
+            className="group bg-white/10 backdrop-blur-md hover:bg-white/20 text-white font-bold px-8 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 inline-flex items-center gap-3 hover-lift border border-white/30"
           >
             <MapPin className="w-5 h-5 group-hover:animate-bounce" />
-            Visit Us
+            {t.hero.visitUs}
           </Link>
         </div>
       </div>

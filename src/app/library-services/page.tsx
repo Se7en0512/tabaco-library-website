@@ -1,7 +1,13 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import SectionHeader from '@/components/SectionHeader';
 import Card from '@/components/Card';
 import { IdCard, Search, BookOpen, RotateCcw, Wifi } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: 'Library Services | Tabaco City Library and Information Center',
+  description: 'Explore our free library services — card application, research assistance, book borrowing, and internet access at Tabaco City Library.',
+};
 
 export default function LibraryServices() {
   const services = [
@@ -66,7 +72,7 @@ export default function LibraryServices() {
 
   return (
     <div className="min-h-screen">
-      <section className="content-section py-20 px-6" style={{ paddingTop: '108px' }}>
+      <section className="content-section py-20 px-6">
         <SectionHeader
           tag={<><span className="text-2xl">📚</span> Library Services</>}
           title="Citizen's Charter"
@@ -80,7 +86,7 @@ export default function LibraryServices() {
                 <Card
                   icon={service.icon}
                   title={service.title}
-                  className="h-full"
+                  className="h-full hover-border-reveal glass p-6 rounded-xl shadow-[var(--shadow)] border border-[var(--border)]"
                 >
                   <div className="text-[var(--muted)] leading-relaxed">
                     {service.description}

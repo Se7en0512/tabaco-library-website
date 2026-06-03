@@ -3,31 +3,18 @@
 import { useState } from 'react';
 import SectionHeader from '@/components/SectionHeader';
 import { ChevronDown } from 'lucide-react';
+import { useTranslations } from '@/i18n/useTranslations';
 
 export default function FAQs() {
+  const t = useTranslations();
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
 
   const faqs = [
-    {
-      question: 'Is membership free?',
-      answer: 'Yes. Library membership is free and helps you access library resources and on-site support.',
-    },
-    {
-      question: 'Do you assist with online government transactions?',
-      answer: 'Yes. The library supports guided online transactions with national agencies within official authorizations.',
-    },
-    {
-      question: 'Are library services free?',
-      answer: 'Most services are free. Fees may apply only in specific cases such as damaged or lost items.',
-    },
-    {
-      question: 'What do I need to get help at the library?',
-      answer: 'Bring a valid ID when needed and any documents required by the service. If you are unsure, our staff can guide you.',
-    },
-    {
-      question: 'Where are you located?',
-      answer: '3rd Floor, Tabaco City Mall Building, Tabaco City, Philippines, 4511.',
-    },
+    { question: t.faqs.q1, answer: t.faqs.a1 },
+    { question: t.faqs.q2, answer: t.faqs.a2 },
+    { question: t.faqs.q3, answer: t.faqs.a3 },
+    { question: t.faqs.q4, answer: t.faqs.a4 },
+    { question: t.faqs.q5, answer: t.faqs.a5 },
   ];
 
   const toggleFAQ = (index: number) => {
@@ -36,11 +23,11 @@ export default function FAQs() {
 
   return (
     <div className="min-h-screen">
-      <section className="content-section py-20 px-6" style={{ paddingTop: '108px' }}>
+      <section className="content-section py-20 px-6">
         <SectionHeader
-          tag={<><span className="text-2xl">❓</span> FAQs</>}
-          title="Quick Answers"
-          description="Everything you need to know to visit the library and access government assistance with confidence."
+          tag={<><span className="text-2xl">❓</span> {t.faqs.tag}</>}
+          title={t.faqs.title}
+          description={t.faqs.desc}
         />
 
         <div className="container mx-auto max-w-4xl">

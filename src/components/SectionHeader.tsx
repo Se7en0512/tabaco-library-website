@@ -4,12 +4,11 @@ interface SectionHeaderProps {
   tag?: ReactNode;
   title: string;
   description?: string;
-  icon?: ReactNode;
   className?: string;
   id?: string;
 }
 
-export default function SectionHeader({ tag, title, description, icon, className = '', id }: SectionHeaderProps) {
+export default function SectionHeader({ tag, title, description, className = '', id }: SectionHeaderProps) {
   return (
     <header className={`section-header text-center mb-16 ${className}`}>
       {tag && (
