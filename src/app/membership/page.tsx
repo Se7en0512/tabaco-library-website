@@ -99,7 +99,7 @@ export default function Membership() {
     <div className="min-h-screen">
       <section className="content-section py-20 px-6">
         <SectionHeader
-          tag={<><span className="text-2xl">👑</span> Membership</>}
+          tag="Membership"
           title="Get Your Library Card"
           description="Enjoy free access to library resources and assistance for supported transactions and digital learning."
         />
@@ -112,7 +112,7 @@ export default function Membership() {
                   icon={benefit.icon}
                   title={benefit.title}
                   description={benefit.description}
-                  className="h-full text-center hover-bg-shift glass p-6 rounded-xl shadow-[var(--shadow)] border border-[var(--border)]"
+                  className="h-full text-center border border-gray-200 bg-white shadow-sm p-6 rounded-xl"
                 />
               </li>
             ))}
@@ -123,7 +123,7 @@ export default function Membership() {
       </section>
 
       {/* Application Form Section */}
-      <section className="py-20 px-6 bg-gradient-to-b from-transparent to-[var(--bg-alt)]">
+      <section className="py-20 px-6 bg-gray-50">
         <div className="container mx-auto max-w-4xl">
           <SectionHeader
             tag={<><FileEdit className="w-6 h-6 inline" /> Apply Now</>}
@@ -131,7 +131,7 @@ export default function Membership() {
             description="Fill out the form below to apply for membership or any library service. We'll reach out to you via email or phone."
           />
 
-          <Card className="p-8 glass">
+          <Card className="p-8 border border-gray-200 bg-white shadow-sm rounded-xl">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -143,7 +143,7 @@ export default function Membership() {
                     value={formData.fullName}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent"
                     placeholder="Juan Dela Cruz"
                   />
                 </div>
@@ -156,7 +156,7 @@ export default function Membership() {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent"
                     placeholder="juan@example.com"
                   />
                 </div>
@@ -169,7 +169,7 @@ export default function Membership() {
                     value={formData.contactNumber}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent"
                     placeholder="0917 123 4567"
                   />
                 </div>
@@ -181,7 +181,7 @@ export default function Membership() {
                     value={formData.serviceType}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent transition-all bg-white"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent bg-white"
                   >
                     <option value="">Select a service...</option>
                     {serviceOptions.map(opt => (
@@ -215,7 +215,7 @@ export default function Membership() {
                   name="address"
                   value={formData.address}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent"
                   placeholder="Brgy. San Miguel, Tabaco City"
                 />
               </div>
@@ -228,7 +228,7 @@ export default function Membership() {
                   name="requirementsLink"
                   value={formData.requirementsLink}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent"
                   placeholder="https://drive.google.com/..."
                 />
                 <p className="text-xs text-[var(--muted)] mt-1">
@@ -244,7 +244,7 @@ export default function Membership() {
                   value={formData.message}
                   onChange={handleChange}
                   rows={4}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent transition-all resize-vertical"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent resize-vertical"
                   placeholder="Any special requests or notes..."
                 />
               </div>
@@ -264,7 +264,7 @@ export default function Membership() {
                 <button
                   type="submit"
                   disabled={status === 'sending'}
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] hover:from-[var(--secondary)] hover:to-[var(--primary)] text-white font-bold px-10 py-4 rounded-xl transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed text-lg"
+                    className="inline-flex items-center gap-2 bg-[var(--primary)] hover:bg-[var(--secondary)] text-white font-bold px-10 py-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed text-lg"
                 >
                   <Send className="w-5 h-5" />
                   {status === 'sending' ? 'Submitting...' : 'Submit Application'}

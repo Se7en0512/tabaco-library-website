@@ -15,18 +15,18 @@ export default function Footer() {
           {/* Logo and Tagline - Far Left */}
           <div className="lg:col-span-2">
             <Link href="/" className="mb-4 hover:opacity-80 transition-opacity">
-              <div className="font-bold text-xl text-white leading-tight">Tabaco City Library and Information Center</div>
+              <div className="font-bold text-xl text-white leading-tight text-pretty">Tabaco City Library and Information Center</div>
             </Link>
             <p className="text-gray-300 text-sm leading-relaxed mb-6">
               {t.footer.tagline}
             </p>
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-sm text-gray-300">
-                <MapPin className="w-4 h-4 text-blue-400" />
+                <MapPin className="w-4 h-4 text-gray-400" />
                 <span>{t.footer.address}</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-300">
-                <Mail className="w-4 h-4 text-blue-400" />
+                <Mail className="w-4 h-4 text-gray-400" />
                 <span>{t.footer.email}</span>
               </div>
             </div>
@@ -34,7 +34,7 @@ export default function Footer() {
 
           {/* Services Column */}
           <div>
-            <h3 className="font-semibold text-white text-lg mb-4">{t.footer.services}</h3>
+            <h3 className="font-semibold text-white text-lg mb-4">{t.footer.libraryServices}</h3>
             <ul className="space-y-3">
               <li>
                 <Link href="/library-services" className="text-gray-300 hover:text-blue-400 transition-colors text-sm">
@@ -54,9 +54,9 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Company Column */}
+          {/* About Column */}
           <div>
-            <h3 className="font-semibold text-white text-lg mb-4">{t.footer.company}</h3>
+            <h3 className="font-semibold text-white text-lg mb-4">{t.footer.about}</h3>
             <ul className="space-y-3">
               <li>
                 <Link href="/about" className="text-gray-300 hover:text-blue-400 transition-colors text-sm">
@@ -108,7 +108,9 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-gray-300 hover:text-blue-400 transition-colors text-sm"
               >
-                <span>📘</span>
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
                 <span>{t.footer.facebook}</span>
               </a>
               <div className="text-sm text-gray-400">
@@ -129,7 +131,6 @@ export default function Footer() {
             </p>
             <div className="flex items-center gap-6 text-sm text-gray-400">
               <span>{t.footer.govTag}</span>
-              <span>•</span>
               <span>{t.footer.empowerTag}</span>
             </div>
           </div>

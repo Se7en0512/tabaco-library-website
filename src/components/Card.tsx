@@ -12,10 +12,11 @@ interface CardProps {
 }
 
 export default function Card({ children, className = '', icon, title, description, href, onClick }: CardProps) {
+  const hasHeader = !!(icon || title);
   const cardContent = (
     <div className={`card p-6 rounded-xl border transition-all duration-300 ${className}`}>
-      {(icon || title) && (
-        <div className="flex items-center gap-4 mb-4">
+      {hasHeader && (
+        <div className={`flex items-center gap-4 ${children || description ? 'mb-4' : ''}`}>
           {icon && (
             <div className="card-icon flex-shrink-0">
               {icon}
@@ -24,7 +25,7 @@ export default function Card({ children, className = '', icon, title, descriptio
           {title && <h3 className="text-xl font-semibold text-[var(--text)]">{title}</h3>}
         </div>
       )}
-      {description && <p className="text-[var(--muted)] mb-4">{description}</p>}
+      {description && <p className={`text-[var(--muted)] ${children ? 'mb-4' : ''}`}>{description}</p>}
       {children}
     </div>
   );

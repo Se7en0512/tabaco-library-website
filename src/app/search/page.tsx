@@ -18,32 +18,32 @@ export default function SearchPage() {
 
         <div className="container mx-auto max-w-4xl">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card className="text-center h-full hover-lift glass p-6 rounded-xl shadow-[var(--shadow)] border border-[var(--border)]">
-              <div className="card-icon w-16 h-16 bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] rounded-xl flex items-center justify-center mb-4 mx-auto">
-                <BookOpen className="w-8 h-8 text-white" />
+            <Card className="text-center h-full border border-gray-200 bg-white shadow-sm p-6 rounded-xl hover:shadow-md transition-shadow">
+              <div className="card-icon w-14 h-14 bg-[var(--primary)] rounded-xl flex items-center justify-center mb-4 mx-auto">
+                <BookOpen className="w-7 h-7 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-[var(--text)] mb-4">{t.search.bookTitle}</h3>
-              <p className="text-[var(--muted)]">
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">{t.search.bookTitle}</h3>
+              <p className="text-gray-600">
                 {t.search.bookDesc}
               </p>
             </Card>
 
-            <Card className="text-center h-full hover-glow glass p-6 rounded-xl shadow-[var(--shadow)] border border-[var(--border)]">
-              <div className="card-icon w-16 h-16 bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] rounded-xl flex items-center justify-center mb-4 mx-auto">
-                <Mail className="w-8 h-8 text-white" />
+            <Card className="text-center h-full border border-gray-200 bg-white shadow-sm p-6 rounded-xl hover:shadow-md transition-shadow">
+              <div className="card-icon w-14 h-14 bg-[var(--primary)] rounded-xl flex items-center justify-center mb-4 mx-auto">
+                <Mail className="w-7 h-7 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-[var(--text)] mb-4">{t.search.helpTitle}</h3>
-              <p className="text-[var(--muted)] mb-4">
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">{t.search.helpTitle}</h3>
+              <p className="text-gray-600 mb-4">
                 {t.search.helpDesc} <strong>citylibrarytabaco@gmail.com</strong>
               </p>
             </Card>
 
-            <Card className="text-center h-full hover-border-reveal glass p-6 rounded-xl shadow-[var(--shadow)] border border-[var(--border)]">
-              <div className="card-icon w-16 h-16 bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] rounded-xl flex items-center justify-center mb-4 mx-auto">
-                <Clock className="w-8 h-8 text-white" />
+            <Card className="text-center h-full border border-gray-200 bg-white shadow-sm p-6 rounded-xl hover:shadow-md transition-shadow">
+              <div className="card-icon w-14 h-14 bg-[var(--primary)] rounded-xl flex items-center justify-center mb-4 mx-auto">
+                <Clock className="w-7 h-7 text-white" />
               </div>
-              <h3 className="text-xl font-semibold text-[var(--text)] mb-4">{t.search.hoursTitle}</h3>
-              <p className="text-[var(--muted)]">
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">{t.search.hoursTitle}</h3>
+              <p className="text-gray-600">
                 {t.search.hoursDesc}<br />
                 {t.contactPage.closedHoliday}
               </p>

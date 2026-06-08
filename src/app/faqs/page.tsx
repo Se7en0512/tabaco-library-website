@@ -25,7 +25,7 @@ export default function FAQs() {
     <div className="min-h-screen">
       <section className="content-section py-20 px-6">
         <SectionHeader
-          tag={<><span className="text-2xl">❓</span> {t.faqs.tag}</>}
+          tag={t.faqs.tag}
           title={t.faqs.title}
           description={t.faqs.desc}
         />
@@ -33,7 +33,7 @@ export default function FAQs() {
         <div className="container mx-auto max-w-4xl">
           <div className="faq-list space-y-4" role="list">
             {faqs.map((faq, index) => (
-              <div key={index} className="faq-item glass rounded-xl overflow-hidden" role="listitem">
+              <div key={index} className="border border-gray-200 bg-white shadow-sm rounded-xl overflow-hidden" role="listitem">
                 <button
                   className="faq-question w-full text-left p-6 flex items-center justify-between hover:bg-[var(--border)] transition-colors focus:outline-none focus:shadow-[var(--focus)] rounded-xl"
                   onClick={() => toggleFAQ(index)}

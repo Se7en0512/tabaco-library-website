@@ -90,7 +90,7 @@ export default function Staff() {
                 placeholder="Search by name or position..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 rounded-xl border border-[var(--border)] bg-white/80 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent transition-all text-[var(--text)]"
+                className="w-full pl-12 pr-4 py-3 rounded-lg border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent text-gray-900"
               />
             </div>
             {searchQuery && (
@@ -110,7 +110,7 @@ export default function Staff() {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {staff.map((person, index) => (
-                  <div key={index} className="glass p-6 rounded-xl shadow-[var(--shadow)] hover-lift flex items-center gap-4">
+                  <div key={index} className="border border-gray-200 bg-white shadow-sm p-6 rounded-xl hover:shadow-md transition-shadow flex items-center gap-4">
                     <img
                       src={person.avatar}
                       alt={person.name}

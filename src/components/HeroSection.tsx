@@ -2,8 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Route, MapPin } from 'lucide-react';
+import { Route, MapPin, BookOpen, Users, Clock } from 'lucide-react';
 import { useTranslations } from '@/i18n/useTranslations';
+
+const stats = [
+  { icon: BookOpen, value: 'Free Access', label: 'General Reference' },
+  { icon: Users, value: 'Open to All', label: 'Tabaqueños' },
+  { icon: Clock, value: 'WiFi', label: 'Mon–Thu, 7AM–6PM' },
+];
 
 export default function HeroSection() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -26,81 +32,75 @@ export default function HeroSection() {
         muted
         loop
         playsInline
+        poster="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1600&q=80"
       >
         <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260314_131748_f2ca2a28-fed7-44c8-b9a9-bd9acdd5ec31.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
       </video>
 
-      {/* Animated Gradient Mesh Overlay */}
-      <div className="absolute inset-0">
-        {/* Primary gradient overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/70 via-indigo-900/60 to-teal-900/70" />
-
-        {/* Animated mesh overlay */}
-        <div className="absolute inset-0 opacity-40">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-blue-600/15 via-transparent to-teal-600/15 animate-pulse" />
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-blue-500/8 to-transparent animate-pulse delay-1000" />
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-l from-teal-600/15 via-transparent to-indigo-600/15 animate-pulse delay-500" />
-
-          {/* Floating mesh particles */}
-          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/8 rounded-full blur-3xl animate-bounce delay-300" />
-          <div className="absolute top-3/4 right-1/4 w-96 h-96 bg-teal-500/8 rounded-full blur-3xl animate-bounce delay-700" />
-          <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-indigo-500/8 rounded-full blur-3xl animate-bounce delay-1000" />
-        </div>
-
-        {/* Subtle pattern overlay */}
-        <div className="absolute inset-0 opacity-15">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.08),transparent_50%)]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(255,255,255,0.04),transparent_50%)]" />
-        </div>
-      </div>
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-blue-900/75" />
 
       {/* Hero Content */}
-      <div className={`relative z-10 text-center max-w-6xl mx-auto px-6 transition-all duration-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+      <div className={`relative z-10 text-center max-w-5xl mx-auto px-6 transition-all duration-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
 
-{/* Main Heading */}
+        {/* Main Heading */}
         <h1
           id="hero-title"
-          className="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-tight mb-6 drop-shadow-2xl"
+          className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-5"
         >
           <span className="block">{t.hero.welcome}</span>
-          <span className="block bg-gradient-to-r from-cyan-300 via-blue-200 to-teal-200 bg-clip-text text-transparent">
+          <span className="block text-white">
             {t.hero.library}
           </span>
         </h1>
 
         {/* Subheading */}
-        <p className="text-xl md:text-2xl text-blue-100 mb-12 max-w-3xl mx-auto leading-relaxed font-medium">
+        <p className="text-lg md:text-xl text-blue-200 mb-8 max-w-3xl mx-auto leading-relaxed">
           {t.hero.subtitle}
-          <span className="block mt-2 text-lg text-blue-200">{t.hero.subtitle2}</span>
+          <span className="block mt-1 text-base text-blue-300">{t.hero.subtitle2}</span>
         </p>
 
+        {/* Stat Pills */}
+        <div className="flex flex-wrap justify-center gap-3 mb-10">
+          {stats.map((s) => (
+            <div
+              key={s.label}
+              className="flex items-center gap-2 bg-white/10 border border-white/10 rounded-full px-4 py-2 text-white/90 text-sm font-medium"
+            >
+              <s.icon className="w-4 h-4 text-blue-300" />
+              <span>{s.value}</span>
+              <span className="text-white/50 ml-0.5">{s.label}</span>
+            </div>
+          ))}
+        </div>
+
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Link
             href="/library-services"
-            className="group bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-blue-900 font-bold px-8 py-4 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 inline-flex items-center gap-3 hover:scale-105 border border-white/20"
+            className="bg-white text-blue-900 font-bold px-8 py-3.5 rounded-full shadow-md hover:shadow-lg transition-shadow inline-flex items-center gap-2"
           >
-            <Route className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+            <Route className="w-5 h-5" />
             {t.hero.exploreServices}
           </Link>
 
           <Link
             href="/contact"
-            className="group bg-white/10 backdrop-blur-md hover:bg-white/20 text-white font-bold px-8 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 inline-flex items-center gap-3 hover-lift border border-white/30"
+            className="bg-white/10 border border-white/30 text-white font-bold px-8 py-3.5 rounded-full hover:bg-white/20 transition-colors inline-flex items-center gap-2"
           >
-            <MapPin className="w-5 h-5 group-hover:animate-bounce" />
+            <MapPin className="w-5 h-5" />
             {t.hero.visitUs}
           </Link>
         </div>
       </div>
 
-
+      {/* Bottom fade */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-gray-50 to-transparent pointer-events-none" />
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/60 animate-bounce">
-        <div className="w-6 h-10 border-2 border-white/40 rounded-full flex justify-center">
-          <div className="w-1 h-3 bg-white/40 rounded-full mt-2 animate-pulse"></div>
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/40">
+        <div className="w-5 h-8 border border-white/30 rounded-full flex justify-center">
+          <div className="w-1 h-2 bg-white/30 rounded-full mt-2 animate-pulse" />
         </div>
       </div>
     </section>

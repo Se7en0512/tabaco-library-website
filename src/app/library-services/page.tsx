@@ -74,7 +74,7 @@ export default function LibraryServices() {
     <div className="min-h-screen">
       <section className="content-section py-20 px-6">
         <SectionHeader
-          tag={<><span className="text-2xl">📚</span> Library Services</>}
+          tag="Library Services"
           title="Citizen's Charter"
           description="Quick overview of commonly requested library services. Fees are generally None/Free unless items are damaged."
         />
@@ -86,7 +86,7 @@ export default function LibraryServices() {
                 <Card
                   icon={service.icon}
                   title={service.title}
-                  className="h-full hover-border-reveal glass p-6 rounded-xl shadow-[var(--shadow)] border border-[var(--border)]"
+                  className="h-full border border-gray-200 bg-white shadow-sm p-6 rounded-xl"
                 >
                   <div className="text-[var(--muted)] leading-relaxed">
                     {service.description}
@@ -102,9 +102,8 @@ export default function LibraryServices() {
             </p>
             <Link
               href="/membership"
-              className="btn btn-primary bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] hover:from-[var(--secondary)] hover:to-[var(--primary)] text-white font-bold px-8 py-3 rounded-xl transition-all duration-300 inline-flex items-center gap-2 hover:scale-105"
+              className="bg-[var(--primary)] hover:bg-[var(--secondary)] text-white font-bold px-8 py-3 rounded-xl transition-colors inline-flex items-center gap-2"
             >
-              <span className="text-2xl">👑</span>
               Learn About Membership
             </Link>
           </div>
