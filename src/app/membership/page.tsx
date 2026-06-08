@@ -4,6 +4,7 @@ import SectionHeader from '@/components/SectionHeader';
 import Card from '@/components/Card';
 import { IdCard, BookOpen, Wifi, Send, FileEdit } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslations } from '@/i18n/useTranslations';
 
 const serviceOptions = [
   'Library Card Application',
@@ -31,6 +32,7 @@ const serviceRequirements: Record<string, string[]> = {
 };
 
 export default function Membership() {
+  const t = useTranslations();
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -51,14 +53,13 @@ export default function Membership() {
     e.preventDefault();
     setStatus('sending');
 
-    const formspreeUrl = process.env.NEXT_PUBLIC_FORMSPREE_URL || 'https://formspree.io/f/mpqeayyn';
-
     try {
-      const res = await fetch(formspreeUrl, {
+      const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
+          type: 'membership',
           _subject: `Membership Application: ${formData.serviceType} — ${formData.fullName}`,
         }),
       });
@@ -80,18 +81,18 @@ export default function Membership() {
   const benefits = [
     {
       icon: <IdCard className="w-8 h-8" />,
-      title: 'Free Registration',
-      description: 'Membership is provided to support access to information and community services.',
+      title: t.membership.free.title,
+      description: t.membership.free.desc,
     },
     {
       icon: <BookOpen className="w-8 h-8" />,
-      title: 'Borrowing Privileges',
-      description: 'Use your card to borrow materials and access on-site services.',
+      title: t.membership.borrow.title,
+      description: t.membership.borrow.desc,
     },
     {
       icon: <Wifi className="w-8 h-8" />,
-      title: 'Digital Access',
-      description: 'Access public computers and learning resources (subject to availability and rules).',
+      title: t.membership.digital.title,
+      description: t.membership.digital.desc,
     },
   ];
 
@@ -99,9 +100,9 @@ export default function Membership() {
     <div className="min-h-screen">
       <section className="content-section py-20 px-6">
         <SectionHeader
-          tag="Membership"
-          title="Get Your Library Card"
-          description="Enjoy free access to library resources and assistance for supported transactions and digital learning."
+          tag={t.membership.tag}
+          title={t.membership.title}
+          description={t.membership.desc}
         />
 
         <div className="container mx-auto max-w-6xl">

@@ -2,11 +2,13 @@
 
 import { useEffect, useRef, useCallback, useState } from 'react';
 import Link from 'next/link';
-import { ChevronRight, ChevronLeft } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Calendar, MapPin, Clock, X } from 'lucide-react';
 import HeroSection from '@/components/HeroSection';
+import { events, isCurrentMonth, isPreviousMonth, getEventStatus, formatEventDate } from '@/data/events';
+import type { Event } from '@/data/events';
 
-const EVENT_END = new Date('2026-06-11');
-const SHOW_EVENT = typeof window !== 'undefined' ? new Date() < EVENT_END : true;
+const EVENT_START = new Date('2026-06-09T00:00:00');
+const EVENT_END = new Date('2026-06-11T00:00:00');
 
 function MarqueeBanner() {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -42,6 +44,251 @@ function MarqueeBanner() {
   );
 }
 
+function HomeEventCard({ event, status, statusColors }: { event: Event; status: string; statusColors: Record<string, string> }) {
+  const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (lightboxIdx === null) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (!event.images) return;
+      if (e.key === 'ArrowLeft') setLightboxIdx((lightboxIdx - 1 + event.images.length) % event.images.length);
+      if (e.key === 'ArrowRight') setLightboxIdx((lightboxIdx + 1) % event.images.length);
+      if (e.key === 'Escape') setLightboxIdx(null);
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [lightboxIdx, event.images]);
+
+  return (
+    <>
+      <div className="rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+        {/* Featured Image */}
+        {event.images && event.images.length > 0 && (
+          <button
+            onClick={() => setLightboxIdx(0)}
+            className="w-full aspect-[16/9] md:aspect-[21/9] overflow-hidden bg-gray-100 relative group"
+          >
+            <img
+              src={event.images[0]}
+              alt={event.title}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+            {event.images.length > 1 && (
+              <div className="absolute bottom-4 right-4 bg-black/60 text-white text-xs font-semibold px-3 py-1.5 rounded-full">
+                +{event.images.length - 1} photos
+              </div>
+            )}
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+          </button>
+        )}
+
+        <div className="p-6 md:p-8">
+          <div className="flex items-start justify-between mb-3">
+            <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${statusColors[status]}`}>
+              {status === 'upcoming' ? 'Upcoming' : status === 'ongoing' ? 'Ongoing' : 'Past Event'}
+            </span>
+          </div>
+          <Link href="/programs">
+            <h3 className="text-xl font-bold text-gray-900 mb-2 hover:text-[var(--primary)] transition-colors">
+              {event.title}
+            </h3>
+          </Link>
+          <p className="text-base text-gray-500 mb-4 line-clamp-3 leading-relaxed">
+            {event.description}
+          </p>
+          <div className="space-y-1.5 mb-4">
+            <div className="flex items-center gap-2 text-sm text-gray-400">
+              <Calendar className="w-4 h-4" />
+              {formatEventDate(event.startDate)}{formatEventDate(event.startDate) !== formatEventDate(event.endDate) ? ` — ${formatEventDate(event.endDate)}` : ''}
+            </div>
+            {event.time && (
+              <div className="flex items-center gap-2 text-sm text-gray-400">
+                <Clock className="w-4 h-4" />
+                {event.time}
+              </div>
+            )}
+            <div className="flex items-center gap-2 text-sm text-gray-400">
+              <MapPin className="w-4 h-4" />
+              {event.location}
+            </div>
+          </div>
+
+          {/* Thumbnail Strip */}
+          {event.images && event.images.length > 1 && (
+            <div className="border-t border-gray-100 pt-4">
+              <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-1" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                {event.images.map((img, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setLightboxIdx(i)}
+                    className="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border border-gray-200 hover:border-[var(--primary)] transition-colors bg-gray-100 group relative"
+                  >
+                    <img
+                      src={img}
+                      alt={`${event.title} photo ${i + 1}`}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      loading="lazy"
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Lightbox */}
+      {lightboxIdx !== null && event.images && (
+        <div
+          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
+          onClick={() => setLightboxIdx(null)}
+        >
+          <button
+            onClick={() => setLightboxIdx(null)}
+            className="absolute top-4 right-4 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+          >
+            <X className="w-6 h-6 text-white" />
+          </button>
+          <button
+            onClick={(e) => { e.stopPropagation(); setLightboxIdx((lightboxIdx - 1 + event.images!.length) % event.images!.length); }}
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+          >
+            <ChevronLeft className="w-6 h-6 text-white" />
+          </button>
+          <img
+            src={event.images![lightboxIdx]}
+            alt={`${event.title} photo ${lightboxIdx + 1}`}
+            className="max-w-full max-h-[85vh] object-contain rounded-lg"
+            onClick={(e) => e.stopPropagation()}
+          />
+          <button
+            onClick={(e) => { e.stopPropagation(); setLightboxIdx((lightboxIdx + 1) % event.images!.length); }}
+            className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+          >
+            <ChevronRight className="w-6 h-6 text-white" />
+          </button>
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/60 text-white text-sm px-4 py-1.5 rounded-full">
+            {lightboxIdx + 1} / {event.images!.length}
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+function HighlightsCard({ event }: { event: Event }) {
+  const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (lightboxIdx === null) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (!event.images) return;
+      if (e.key === 'ArrowLeft') setLightboxIdx((lightboxIdx - 1 + event.images.length) % event.images.length);
+      if (e.key === 'ArrowRight') setLightboxIdx((lightboxIdx + 1) % event.images.length);
+      if (e.key === 'Escape') setLightboxIdx(null);
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [lightboxIdx, event.images]);
+
+  return (
+    <div className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+      {/* Featured Image */}
+      {event.images && event.images.length > 0 && (
+        <button
+          onClick={() => setLightboxIdx(0)}
+          className="w-full aspect-[16/9] md:aspect-[21/9] overflow-hidden bg-gray-100 relative group"
+        >
+          <img
+            src={event.images[0]}
+            alt={event.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+          {event.images.length > 1 && (
+            <div className="absolute bottom-4 right-4 bg-black/60 text-white text-xs font-semibold px-3 py-1.5 rounded-full">
+              +{event.images.length - 1} photos
+            </div>
+          )}
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+        </button>
+      )}
+
+      <div className="p-6 md:p-8">
+        <h3 className="text-2xl font-bold text-gray-900 mb-3">{event.title}</h3>
+        <p className="text-base text-gray-600 leading-relaxed mb-4">{event.description}</p>
+        <div className="flex flex-wrap gap-4 text-sm text-gray-400 mb-5">
+          <div className="flex items-center gap-1.5">
+            <Calendar className="w-4 h-4" />
+            {formatEventDate(event.startDate)}{formatEventDate(event.startDate) !== formatEventDate(event.endDate) ? ` — ${formatEventDate(event.endDate)}` : ''}
+          </div>
+          {event.location && (
+            <div className="flex items-center gap-1.5">
+              <MapPin className="w-4 h-4" />
+              {event.location}
+            </div>
+          )}
+        </div>
+
+        {/* Thumbnail Strip */}
+        {event.images && event.images.length > 1 && (
+          <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-1" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            {event.images.map((img, i) => (
+              <button
+                key={i}
+                onClick={() => setLightboxIdx(i)}
+                className="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border border-gray-200 hover:border-[var(--primary)] transition-colors bg-gray-100 group relative"
+              >
+                <img
+                  src={img}
+                  alt={`${event.title} photo ${i + 1}`}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  loading="lazy"
+                />
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Lightbox */}
+      {lightboxIdx !== null && event.images && (
+        <div
+          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
+          onClick={() => setLightboxIdx(null)}
+        >
+          <button
+            onClick={() => setLightboxIdx(null)}
+            className="absolute top-4 right-4 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+          >
+            <X className="w-6 h-6 text-white" />
+          </button>
+          <button
+            onClick={(e) => { e.stopPropagation(); setLightboxIdx((lightboxIdx - 1 + event.images!.length) % event.images!.length); }}
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+          >
+            <ChevronLeft className="w-6 h-6 text-white" />
+          </button>
+          <img
+            src={event.images![lightboxIdx]}
+            alt={`${event.title} photo ${lightboxIdx + 1}`}
+            className="max-w-full max-h-[85vh] object-contain rounded-lg"
+            onClick={(e) => e.stopPropagation()}
+          />
+          <button
+            onClick={(e) => { e.stopPropagation(); setLightboxIdx((lightboxIdx + 1) % event.images!.length); }}
+            className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+          >
+            <ChevronRight className="w-6 h-6 text-white" />
+          </button>
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/60 text-white text-sm px-4 py-1.5 rounded-full">
+            {lightboxIdx + 1} / {event.images!.length}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function HomeClient() {
 
   const trackRef = useRef<HTMLDivElement>(null);
@@ -51,6 +298,14 @@ export default function HomeClient() {
 
   const [centerIdx, setCenterIdx] = useState(0);
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const [eventStatus, setEventStatus] = useState<'upcoming' | 'ongoing' | 'past'>('upcoming');
+
+  useEffect(() => {
+    const now = new Date();
+    if (now < EVENT_START) setEventStatus('upcoming');
+    else if (now >= EVENT_START && now < EVENT_END) setEventStatus('ongoing');
+    else setEventStatus('past');
+  }, []);
 
   const startScroll = useCallback(() => {
     let lastTime = 0;
@@ -172,15 +427,18 @@ export default function HomeClient() {
       <HeroSection />
 
       {/* News Ticker Banner */}
-      {SHOW_EVENT && (
+      {eventStatus !== 'past' && (
       <div className="sticky top-16 z-40 bg-stone-900/95 backdrop-blur-md border-b border-white/10 text-white overflow-hidden shadow-lg">
         <div className="flex items-stretch">
-          <div className="flex items-center gap-3 bg-gradient-to-r from-red-700 to-red-600 px-4 md:px-6 py-2.5 flex-shrink-0">
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/90">Upcoming Event</span>
+          <div className={`flex items-center gap-3 px-4 md:px-6 py-2.5 flex-shrink-0 ${eventStatus === 'ongoing' ? 'bg-gradient-to-r from-green-700 to-green-600' : 'bg-gradient-to-r from-red-700 to-red-600'}`}>
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/90">
+              {eventStatus === 'ongoing' ? 'Ongoing Event' : 'Upcoming Event'}
+            </span>
           </div>
           <div className="flex items-center flex-1 min-w-0 overflow-hidden px-4">
             <MarqueeBanner />
           </div>
+          {eventStatus === 'upcoming' && (
           <a
             href="https://forms.gle/45XufbbSQm9W9HCQA"
             target="_blank"
@@ -190,6 +448,7 @@ export default function HomeClient() {
             Register
             <ChevronRight className="w-3.5 h-3.5" />
           </a>
+          )}
         </div>
       </div>
       )}
@@ -353,12 +612,14 @@ export default function HomeClient() {
       </section>
 
       {/* Featured Event */}
-      {SHOW_EVENT && (
+      {eventStatus !== 'past' && (
       <section className="py-20 md:py-24 bg-gray-50 scroll-animate">
         <div className="container mx-auto max-w-6xl px-6">
           <div className="rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
-            <div className="bg-[var(--primary)] p-8 md:p-10 text-white">
-              <span className="inline-block bg-white/15 text-white/90 text-xs font-semibold px-3 py-1 rounded uppercase tracking-wider mb-3">Upcoming Event</span>
+            <div className={`p-8 md:p-10 text-white ${eventStatus === 'ongoing' ? 'bg-gradient-to-r from-green-700 to-green-600' : 'bg-[var(--primary)]'}`}>
+              <span className={`inline-block text-xs font-semibold px-3 py-1 rounded uppercase tracking-wider mb-3 ${eventStatus === 'ongoing' ? 'bg-white/20 text-white' : 'bg-white/15 text-white/90'}`}>
+                {eventStatus === 'ongoing' ? 'Ongoing Event' : 'Upcoming Event'}
+              </span>
               <h2 className="text-3xl md:text-4xl font-bold mb-1">
                 Elevate Your Business with Canva
               </h2>
@@ -410,6 +671,68 @@ export default function HomeClient() {
                 />
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+      )}
+
+      {/* This Month's Events */}
+      {events.filter(e => isCurrentMonth(e) && getEventStatus(e) !== 'upcoming').length > 0 && (
+      <section className="py-20 md:py-24 bg-white scroll-animate">
+        <div className="container mx-auto max-w-6xl px-6">
+          <div className="text-center mb-12">
+            <p className="text-sm font-semibold text-[var(--primary)] uppercase tracking-widest mb-3">This Month</p>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Events This Month
+            </h2>
+            <p className="text-lg text-gray-500 max-w-xl mx-auto">
+              What&apos;s happening at your library this month.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-8 max-w-5xl mx-auto">
+            {events.filter(e => isCurrentMonth(e) && getEventStatus(e) !== 'upcoming').sort((a, b) => a.startDate.getTime() - b.startDate.getTime()).map((event) => {
+              const status = getEventStatus(event);
+              const statusColors = {
+                upcoming: 'bg-blue-100 text-blue-800 border-blue-200',
+                ongoing: 'bg-green-100 text-green-800 border-green-200',
+                past: 'bg-gray-100 text-gray-600 border-gray-200',
+              };
+              return <HomeEventCard key={event.id} event={event} status={status} statusColors={statusColors} />;
+            })}
+          </div>
+
+          <div className="text-center mt-10">
+            <Link
+              href="/programs"
+              className="inline-flex items-center gap-2 text-[var(--primary)] hover:text-[var(--secondary)] font-bold transition-colors"
+            >
+              View All Events
+              <ChevronRight className="w-5 h-5" />
+            </Link>
+          </div>
+        </div>
+      </section>
+      )}
+
+      {/* Highlights */}
+      {events.filter(e => isPreviousMonth(e) && getEventStatus(e) === 'past').length > 0 && (
+      <section className="py-20 md:py-24 bg-gray-50 scroll-animate">
+        <div className="container mx-auto max-w-6xl px-6">
+          <div className="text-center mb-12">
+            <p className="text-sm font-semibold text-[var(--primary)] uppercase tracking-widest mb-3">Highlights</p>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Last Month&apos;s Highlights
+            </h2>
+            <p className="text-lg text-gray-500 max-w-xl mx-auto">
+              A look back at the events that brought our community together.
+            </p>
+          </div>
+
+          <div className="max-w-5xl mx-auto space-y-8">
+            {events.filter(e => isPreviousMonth(e) && getEventStatus(e) === 'past').sort((a, b) => a.startDate.getTime() - b.startDate.getTime()).map((event) => (
+              <HighlightsCard key={event.id} event={event} />
+            ))}
           </div>
         </div>
       </section>

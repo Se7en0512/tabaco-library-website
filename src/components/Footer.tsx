@@ -125,15 +125,16 @@ export default function Footer() {
       {/* Bottom Bar with Copyright */}
       <div className="border-t border-gray-800">
         <div className="max-w-7xl mx-auto px-6 py-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-400 text-sm">
-              {t.footer.copyright}
-            </p>
-            <div className="flex items-center gap-6 text-sm text-gray-400">
-              <span>{t.footer.govTag}</span>
-              <span>{t.footer.empowerTag}</span>
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+              <p className="text-gray-400 text-sm">
+                {t.footer.copyright}
+              </p>
+              <div className="flex items-center gap-6 text-sm text-gray-400">
+                <span>{t.footer.govTag}</span>
+                <span>{t.footer.empowerTag}</span>
+                <span className="text-gray-500">Website by Phillip Wendyll B. Belenzo</span>
+              </div>
             </div>
-          </div>
         </div>
       </div>
     </footer>

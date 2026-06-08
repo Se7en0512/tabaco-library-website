@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, message } = body;
+    const { type, name, email, message } = body;
 
     if (!name || !email || !message) {
       return NextResponse.json(
@@ -19,10 +19,21 @@ export async function POST(request: Request) {
       );
     }
 
-    console.log('Contact form submission:', { name, email, message });
+    console.log(`${type === 'membership' ? 'Membership' : 'Contact'} form submission:`, body);
+
+    const formspreeUrl = process.env.NEXT_PUBLIC_FORMSPREE_URL || 'https://formspree.io/f/mpqeayyn';
+    const formspreeRes = await fetch(formspreeUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+
+    if (!formspreeRes.ok) {
+      console.error('Formspree error:', await formspreeRes.text());
+    }
 
     return NextResponse.json(
-      { success: true, message: 'Thank you for your message! We will get back to you soon.' },
+      { success: true, message: 'Thank you for your submission! We will get back to you soon.' },
       { status: 200 }
     );
   } catch {

@@ -28,21 +28,22 @@ export default function Contact() {
     e.preventDefault();
     setStatus('sending');
 
-    const formspreeUrl = process.env.NEXT_PUBLIC_FORMSPREE_URL || 'https://formspree.io/f/mpqeayyn';
-
     try {
-      const res = await fetch(formspreeUrl, {
+      const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          ...formData,
+          type: 'contact',
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
           _subject: `Website Contact: ${formData.name}`,
         }),
       });
 
       if (res.ok) {
         setStatus('success');
-        setStatusMessage('Message sent successfully!');
+        setStatusMessage(t.contactPage.successMsg);
         setFormData({ name: '', email: '', message: '' });
       } else {
         setStatus('error');
